@@ -1,364 +1,589 @@
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Copy, Check, Send, FileText } from 'lucide-react';
 
-export const ContactSection = ({ profile }) => {
+import React, { useState } from "react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Copy,
+  Check,
+  Send,
+  FileText,
+  Sparkles,
+  ArrowUpRight,
+  Github,
+  Linkedin,
+} from "lucide-react";
+
+export const ContactSection = ({ profile = {} }) => {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
+  const [copyError, setCopyError] = useState("");
+  const [emailNotice, setEmailNotice] = useState("");
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    topic: 'Frontend Web Developer Opportunity',
-    message: ''
+    name: "",
+    email: "",
+    topic: "Frontend Web Developer Opportunity",
+    message: "",
   });
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(profile.email);
-    setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2000);
-  };
+  const handleCopy = async (value, setCopied) => {
+    if (!value) {
+      setCopyError("This contact information is not available.");
+      return;
+    }
 
-  const handleCopyPhone = () => {
-    navigator.clipboard.writeText(profile.phone);
-    setCopiedPhone(true);
-    setTimeout(() => setCopiedPhone(false), 2000);
+    try {
+      if (!navigator.clipboard?.writeText) {
+        throw new Error("Clipboard unavailable");
+      }
+
+      await navigator.clipboard.writeText(value);
+      setCopyError("");
+      setCopied(true);
+
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopyError(
+        "Unable to copy automatically. Please select and copy the contact information."
+      );
+    }
   };
 
   const handleDownloadResume = () => {
     const resumeText = `RUTUJA BAIRAGI
-Phone: ${profile.phone} | Email: ${profile.email} | Location: ${profile.location}
-GitHub: ${profile.github} | LinkedIn: ${profile.linkedin}
+Phone: ${profile.phone || ""}
+Email: ${profile.email || ""}
+Location: ${profile.location || ""}
+GitHub: ${profile.github || ""}
+LinkedIn: ${profile.linkedin || ""}
 
-==================================================
 PROFESSIONAL SUMMARY
-==================================================
-${profile.bio}
+${profile.bio || ""}
 
-==================================================
-TECHNICAL SKILLS & CERTIFICATIONS
-==================================================
-• Languages & Frameworks: ReactJS, JavaScript (ES6+), HTML5, CSS3, Tailwind CSS, Bootstrap, Java
-• Core Concepts: React Hooks, REST API Integration (Axios), Responsive Design, Performance Optimization, Cross-Functional Collaboration, Problem Solving, Debugging, Team Communication, OOP
-• Tools & Databases: VS Code, Git, GitHub, MySQL, SQL, Postman, Vite/npm
-• Certifications:
-  - Front End Development (I-Tech System)
-  - Java Programming (Great Learning)
+TECHNICAL SKILLS
+Languages & Frameworks: ReactJS, JavaScript (ES6+), HTML5, CSS3, Tailwind CSS, Bootstrap, Java
+Core Concepts: React Hooks, REST API Integration (Axios), Responsive Design, Performance Optimization, Problem Solving, Debugging, OOP
+Tools & Databases: VS Code, Git, GitHub, MySQL, SQL, Postman, Vite/npm
 
-==================================================
+CERTIFICATIONS
+- Front End Development (I-Tech System)
+- Java Programming (Great Learning)
+
 PROFESSIONAL EXPERIENCE
-==================================================
-1. Rudhisoft Pvt. Ltd. | Mar 2026 – Present
-   Frontend Web Developer Intern (Onsite - Nashik, MH)
-   • Developed and maintained 15+ reusable ReactJS components for e-commerce modules including product listing, cart, checkout, order tracking, and user account management.
-   • Integrated 20+ REST API endpoints using Axios for authentication, product management, order processing, and payment workflows while ensuring responsive user experiences.
-   • Built and optimized responsive user interfaces using ReactJS and Tailwind CSS, ensuring seamless user experiences across desktop, tablet, and mobile devices.
-   • Collaborated with designers and backend developers to implement user-facing features and resolve integration issues across multiple application modules.
 
-2. Oasis Infobyte | Jun 2023 – Aug 2023
-   Web Development Intern (Remote)
-   • Created 3+ responsive web applications using HTML5, CSS3, and JavaScript, ensuring compatibility across major browsers and devices.
-   • Implemented modern layouts using CSS Flexbox, Grid, and Media Queries, achieving responsive designs across mobile, tablet, and desktop screen sizes.
+Rudhisoft Pvt. Ltd. | Mar 2026 – Present
+Frontend Web Developer Intern (Onsite - Nashik, MH)
+- Developed and maintained reusable ReactJS components for e-commerce modules.
+- Integrated REST API endpoints using Axios.
+- Built responsive interfaces using ReactJS and Tailwind CSS.
+- Collaborated with designers and backend developers to implement features and resolve integration issues.
 
-==================================================
+Oasis Infobyte | Jun 2023 – Aug 2023
+Web Development Intern (Remote)
+- Created responsive web applications using HTML5, CSS3, and JavaScript.
+- Used CSS Flexbox, Grid, and media queries for responsive layouts.
+
 ACADEMIC PROJECTS
-==================================================
-• Kumbhmela Online E-Commerce Platform | ReactJS, Redux, Tailwind CSS, REST API
-  - Designed a responsive e-commerce platform with 15+ pages/components, including product listing, cart, checkout, user profile, and order-tracking modules; integrated 20+ REST API endpoints for authentication, cart operations, and order management.
-  - Developed an Admin Panel for managing 50+ product listings, orders, and users with CRUD operations, search, and filtering features.
 
-• Location-Based Mobile Advertising App | ReactJS, Tailwind CSS, GPS/Geofencing API
-  - Built a location-based advertising application with 10+ responsive screens, integrating GPS and Geofencing APIs to deliver targeted advertisements across multiple predefined geographic zones.
-  - Optimized frontend performance through debounced API requests and efficient component rendering, reducing unnecessary API calls by 40% and improving page load times to under 2 seconds.
+Kumbhmela Online E-Commerce Platform
+Technologies: ReactJS, Redux, Tailwind CSS, REST API
+- Developed e-commerce pages and modules including product listing, cart, checkout, profile, and order tracking.
+- Built admin functionality for product, order, and user management.
 
-==================================================
+Location-Based Mobile Advertising App
+Technologies: ReactJS, Tailwind CSS, GPS/Geofencing API
+- Built responsive screens and integrated location-based functionality.
+- Improved frontend performance through debounced API requests and efficient rendering.
+
 EDUCATION
-==================================================
-• Sandip Institute of Technology and Research Center (Jul 2017 – May 2021)
-  Bachelor of Engineering in Computer Engineering – CGPA: 7.68 (Nashik, MH)
 
-• K.V.N. Naik College (2016 – 2017)
-  Higher Secondary Certificate (HSC) – 66.77% (Nashik, MH)
+Sandip Institute of Technology and Research Center
+Bachelor of Engineering in Computer Engineering | CGPA: 7.68 | Jul 2017 – May 2021
+
+K.V.N. Naik College
+Higher Secondary Certificate (HSC) | 66.77% | 2016 – 2017
 `;
 
-    const blob = new Blob([resumeText], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([resumeText], {
+      type: "text/plain;charset=utf-8",
+    });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
+
     link.href = url;
-    link.download = `Rutuja_Bairagi_Resume.txt`;
+    link.download = "Rutuja_Bairagi_Resume.txt";
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    link.remove();
+
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
-      setErrorMessage('Please fill in your name, email, and message.');
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setErrorMessage("");
+    setEmailNotice("");
+
+    const name = formData.name.trim();
+    const email = formData.email.trim();
+    const message = formData.message.trim();
+
+    if (!name || !email || !message) {
+      setErrorMessage("Please fill in your name, email, and message.");
       return;
     }
-    setErrorMessage('');
-    setIsSubmitting(true);
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setFormSubmitted(true);
-    }, 800);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+
+    if (!profile.email) {
+      setErrorMessage(
+        "The contact email is unavailable. Please check the contact details on this page."
+      );
+      return;
+    }
+
+    const subject = formData.topic;
+    const body = [
+      `Name: ${name}`,
+      `Reply email: ${email}`,
+      "",
+      "Message:",
+      message,
+    ].join("\n");
+
+    const mailtoUrl =
+      `mailto:${profile.email}` +
+      `?subject=${encodeURIComponent(subject)}` +
+      `&body=${encodeURIComponent(body)}`;
+
+    try {
+      window.location.href = mailtoUrl;
+      setEmailNotice(
+        "Your email application should open with your message prepared. Send it from that application to complete delivery."
+      );
+    } catch {
+      setErrorMessage(
+        "Could not open your email application. Please contact me directly using the email address shown here."
+      );
+    }
   };
 
-  return (
-    <section id="contact" className="py-24 border-t border-slate-800/80 relative">
-      <div className="absolute bottom-0 right-1/4 w-[450px] h-[280px] bg-cyan-600/10 blur-[130px] rounded-full pointer-events-none" />
+  const socialLinks = [
+    {
+      label: "GitHub",
+      url: profile.github,
+      icon: Github,
+    },
+    {
+      label: "LinkedIn",
+      url: profile.linkedin,
+      icon: Linkedin,
+    },
+  ].filter(
+    (item) =>
+      typeof item.url === "string" &&
+      /^https?:\/\//i.test(item.url) &&
+      item.url !== "#"
+  );
 
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
-        
+  const contactItems = [
+    {
+      label: "Email Address",
+      value: profile.email,
+      icon: Mail,
+      copied: copiedEmail,
+      copy: () => handleCopy(profile.email, setCopiedEmail),
+      href: profile.email ? `mailto:${profile.email}` : null,
+    },
+    {
+      label: "Phone Number",
+      value: profile.phone,
+      icon: Phone,
+      copied: copiedPhone,
+      copy: () => handleCopy(profile.phone, setCopiedPhone),
+      href: profile.phone
+        ? `tel:${profile.phone.replace(/[^\d+]/g, "")}`
+        : null,
+    },
+  ];
+
+  return (
+    <section
+      id="contact"
+      className="relative overflow-hidden border-t border-slate-800/80 py-20 sm:py-24"
+    >
+      {/* Ambient background */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-20 top-10 h-80 w-80 rounded-full bg-cyan-500/[0.07] blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-20 left-0 h-72 w-72 rounded-full bg-blue-500/[0.05] blur-3xl"
+      />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-8">
         {/* Header */}
-        <div className="mb-14">
-          <div className="text-xs font-semibold tracking-wider uppercase text-cyan-400 mb-2">
+        <div className="mb-12 max-w-3xl sm:mb-14">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/[0.07] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-300">
+            <Sparkles className="h-3.5 w-3.5" />
             Let's Connect
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight font-display">
-            Contact & Hire Rutuja
+
+          <h2 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Let's Build Something
+            <span className="mt-1 block text-cyan-400">
+              Great Together.
+            </span>
           </h2>
-          <p className="mt-3 text-slate-400 max-w-xl text-sm sm:text-base">
-            Available for Frontend Web Developer and ReactJS roles. Reach out via email, phone, or the direct form below.
+
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base">
+            Looking for a frontend developer or ReactJS developer? I'd love to
+            connect, discuss opportunities, and explore how I can contribute
+            to your team.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          {/* Left Column: Direct Info & Quick Channels */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-[#0e1420] border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-5">
-              <div>
-                <h3 className="text-lg font-bold text-white font-display">
-                  Direct Contact Information
+        <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-12 lg:gap-8">
+          {/* Left: Contact information */}
+          <div className="space-y-5 lg:col-span-5">
+            <div className="rounded-2xl border border-slate-800/90 bg-[#0e1420]/90 p-5 sm:p-7">
+              <div className="mb-6">
+                <h3 className="font-display text-lg font-bold text-white">
+                  Contact Information
                 </h3>
-                <p className="mt-1 text-xs text-slate-400">
-                  Feel free to get in touch for interviews, discussions, or inquiries.
+                <p className="mt-1.5 text-sm leading-6 text-slate-400">
+                  Choose your preferred way to reach me.
                 </p>
               </div>
 
-              {/* Email Card with 1-click copy */}
-              <div className="p-4 bg-slate-900/80 border border-slate-800 rounded-xl flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 overflow-hidden">
-                  <div className="p-2.5 rounded-lg bg-cyan-500/10 text-cyan-400 shrink-0">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <div className="overflow-hidden">
-                    <div className="text-[11px] text-slate-400">Email Address</div>
-                    <div className="text-xs font-mono font-medium text-white truncate">
-                      {profile.email}
+              <div className="space-y-3">
+                {contactItems.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <div
+                      key={item.label}
+                      className="flex min-w-0 items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/50 p-3.5 transition hover:border-cyan-400/25 sm:p-4"
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-cyan-400/15 bg-cyan-400/[0.07] text-cyan-300">
+                        <Icon className="h-4 w-4" />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[11px] text-slate-500">
+                          {item.label}
+                        </p>
+
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            className="mt-1 block break-all text-sm font-medium text-slate-200 transition hover:text-cyan-300"
+                          >
+                            {item.value}
+                          </a>
+                        ) : (
+                          <p className="mt-1 break-words text-sm text-slate-200">
+                            {item.value || "Not provided"}
+                          </p>
+                        )}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={item.copy}
+                        aria-label={`Copy ${item.label.toLowerCase()}`}
+                        title={`Copy ${item.label.toLowerCase()}`}
+                        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-800 bg-slate-900 px-2.5 py-2 text-xs text-slate-300 transition hover:border-cyan-400/30 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+                      >
+                        {item.copied ? (
+                          <>
+                            <Check className="h-3.5 w-3.5 text-emerald-400" />
+                            <span className="text-emerald-300">Copied</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3.5 w-3.5" />
+                            <span>Copy</span>
+                          </>
+                        )}
+                      </button>
                     </div>
+                  );
+                })}
+
+                <div className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950/50 p-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-cyan-400/15 bg-cyan-400/[0.07] text-cyan-300">
+                    <MapPin className="h-4 w-4" />
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="text-[11px] text-slate-500">Location</p>
+                    <p className="mt-1 break-words text-sm font-medium text-slate-200">
+                      {profile.location || "Not provided"}
+                    </p>
                   </div>
                 </div>
+              </div>
 
-                <button
-                  onClick={handleCopyEmail}
-                  className="px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors shrink-0 flex items-center gap-1.5"
-                  title="Copy email to clipboard"
+              {copyError && (
+                <p
+                  role="status"
+                  className="mt-3 text-xs leading-5 text-amber-300"
                 >
-                  {copiedEmail ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-emerald-300">Copied</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>Copy</span>
-                    </>
-                  )}
-                </button>
-              </div>
+                  {copyError}
+                </p>
+              )}
 
-              {/* Phone Card with 1-click copy */}
-              <div className="p-4 bg-slate-900/80 border border-slate-800 rounded-xl flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 overflow-hidden">
-                  <div className="p-2.5 rounded-lg bg-cyan-500/10 text-cyan-400 shrink-0">
-                    <Phone className="w-4 h-4" />
-                  </div>
-                  <div className="overflow-hidden">
-                    <div className="text-[11px] text-slate-400">Phone Number</div>
-                    <div className="text-xs font-mono font-medium text-white truncate">
-                      {profile.phone}
-                    </div>
-                  </div>
-                </div>
+              {/* Social profiles */}
+              {socialLinks.length > 0 && (
+                <div className="mt-6 border-t border-slate-800 pt-5">
+                  <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                    Find me online
+                  </p>
 
-                <button
-                  onClick={handleCopyPhone}
-                  className="px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors shrink-0 flex items-center gap-1.5"
-                  title="Copy phone to clipboard"
-                >
-                  {copiedPhone ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-emerald-300">Copied</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>Copy</span>
-                    </>
-                  )}
-                </button>
-              </div>
+                  <div className="flex flex-wrap gap-2">
+                    {socialLinks.map((social) => {
+                      const Icon = social.icon;
 
-              {/* Location Card */}
-              <div className="p-4 bg-slate-900/80 border border-slate-800 rounded-xl flex items-center gap-3">
-                <div className="p-2.5 rounded-lg bg-cyan-500/10 text-cyan-400 shrink-0">
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-[11px] text-slate-400">Location</div>
-                  <div className="text-xs font-medium text-white">
-                    {profile.location}
+                      return (
+                        <a
+                          key={social.label}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/70 px-3.5 py-2.5 text-xs font-medium text-slate-300 transition hover:border-cyan-400/30 hover:text-cyan-300"
+                        >
+                          <Icon className="h-4 w-4" />
+                          {social.label}
+                          <ArrowUpRight className="h-3 w-3" />
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
-              </div>
+              )}
 
-              {/* Download Resume Button */}
+              {/* Resume download */}
               <button
+                type="button"
                 onClick={handleDownloadResume}
-                className="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 border border-slate-750 hover:border-cyan-400/60 rounded-xl text-xs font-semibold text-slate-200 hover:text-white flex items-center justify-center gap-2 transition-colors"
+                className="mt-6 flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:border-cyan-400/40 hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
               >
-                <FileText className="w-4 h-4 text-cyan-400" />
-                <span>Download Complete Resume (.txt)</span>
+                <FileText className="h-4 w-4 text-cyan-400" />
+                Download Resume (.txt)
+                <ArrowUpRight className="ml-auto h-4 w-4 text-slate-500" />
               </button>
+            </div>
 
-              {/* Current Status Box */}
-              <div className="p-4 bg-cyan-950/20 border border-cyan-800/40 rounded-xl">
-                <div className="text-xs font-semibold text-cyan-300 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400" />
-                  <span>Available for Frontend Roles</span>
-                </div>
-                <p className="mt-1 text-xs text-slate-300">
-                  Intern at Rudhisoft Pvt. Ltd. Ready to contribute with ReactJS, Axios, Tailwind CSS, and strong frontend development skills.
-                </p>
+            {/* Availability card */}
+            <div className="rounded-2xl border border-cyan-400/15 bg-gradient-to-br from-cyan-400/[0.08] to-blue-500/[0.04] p-5 sm:p-6">
+              <div className="flex items-center gap-2.5">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-30" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-cyan-400" />
+                </span>
+
+                <h3 className="text-sm font-bold text-cyan-200">
+                  Frontend Development
+                </h3>
               </div>
+
+              <p className="mt-3 text-sm leading-6 text-slate-300">
+                Interested in ReactJS, responsive interfaces, API integration,
+                and building user-friendly web applications.
+              </p>
             </div>
           </div>
 
-          {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7 bg-[#0e1420] border border-slate-800 rounded-2xl p-6 sm:p-8">
-            {formSubmitted ? (
-              <div className="p-8 text-center space-y-4">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center mx-auto">
-                  <Check className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold text-white font-display">
-                  Message Sent to Rutuja!
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                  Thank you, <span className="font-semibold text-white">{formData.name}</span>. Your message regarding <span className="font-semibold text-cyan-300">{formData.topic}</span> has been received. I will respond to <span className="font-mono text-white">{formData.email}</span> promptly.
-                </p>
-                <div className="pt-4">
-                  <button
-                    onClick={() => {
-                      setFormData({
-                        name: '',
-                        email: '',
-                        topic: 'Frontend Web Developer Opportunity',
-                        message: ''
-                      });
-                      setFormSubmitted(false);
-                    }}
-                    className="px-5 py-2.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-colors"
-                  >
-                    Send Another Message
-                  </button>
-                </div>
+          {/* Right: Contact form */}
+          <div className="rounded-2xl border border-slate-800/90 bg-[#0e1420]/95 p-5 sm:p-8 lg:col-span-7">
+            <div className="mb-7">
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/[0.08] text-cyan-300">
+                <Send className="h-5 w-5" />
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono text-slate-300 mb-1.5">
-                      Your Name *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. Hiring Manager / Recruiter"
-                      className="w-full bg-slate-900 border border-slate-800 focus:border-cyan-400 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none transition-colors"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-mono text-slate-300 mb-1.5">
-                      Your Email *
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="hr@company.com"
-                      className="w-full bg-slate-900 border border-slate-800 focus:border-cyan-400 rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none transition-colors"
-                    />
-                  </div>
-                </div>
 
+              <h3 className="font-display text-xl font-bold text-white">
+                Send a Message
+              </h3>
+
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                Fill in the details below. Your email application will open
+                with your message ready to send.
+              </p>
+            </div>
+
+            <form
+              onSubmit={handleSubmit}
+              onChange={() => {
+                setErrorMessage("");
+                setEmailNotice("");
+              }}
+              className="space-y-5"
+            >
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-xs font-mono text-slate-300 mb-1.5">
-                    Subject / Reason for Reaching Out
-                  </label>
-                  <select
-                    value={formData.topic}
-                    onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-800 focus:border-cyan-400 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none transition-colors"
+                  <label
+                    htmlFor="contact-name"
+                    className="mb-2 block text-xs font-medium text-slate-300"
                   >
-                    <option value="Frontend Web Developer Opportunity">Frontend Web Developer Role / Interview</option>
-                    <option value="ReactJS & Tailwind Web Project">ReactJS & Tailwind Web Project</option>
-                    <option value="E-Commerce Module Development">E-Commerce Web Application Development</option>
-                    <option value="General Networking or Mentorship">General Networking & Discussion</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-mono text-slate-300 mb-1.5">
-                    Your Message *
+                    Your Name <span className="text-cyan-400">*</span>
                   </label>
-                  <textarea
+
+                  <input
+                    id="contact-name"
+                    type="text"
+                    name="name"
+                    autoComplete="name"
                     required
-                    rows={4}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell me about your team, the role requirements, or project details..."
-                    className="w-full bg-slate-900 border border-slate-800 focus:border-cyan-400 rounded-xl p-4 text-xs text-white placeholder-slate-500 focus:outline-none transition-colors"
+                    maxLength={100}
+                    value={formData.name}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        name: event.target.value,
+                      })
+                    }
+                    placeholder="Enter your name"
+                    className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/10"
                   />
                 </div>
 
-                {errorMessage && (
-                  <div className="text-xs text-rose-400 bg-rose-950/30 border border-rose-800/40 p-3 rounded-lg">
-                    {errorMessage}
-                  </div>
-                )}
+                <div>
+                  <label
+                    htmlFor="contact-email"
+                    className="mb-2 block text-xs font-medium text-slate-300"
+                  >
+                    Your Email <span className="text-cyan-400">*</span>
+                  </label>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-3 px-6 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-xl transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2 active:scale-[0.99] disabled:opacity-75"
+                  <input
+                    id="contact-email"
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    required
+                    maxLength={254}
+                    value={formData.email}
+                    onChange={(event) =>
+                      setFormData({
+                        ...formData,
+                        email: event.target.value,
+                      })
+                    }
+                    placeholder="you@company.com"
+                    className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/10"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="contact-topic"
+                  className="mb-2 block text-xs font-medium text-slate-300"
                 >
-                  {isSubmitting ? (
-                    <span>Sending Message...</span>
-                  ) : (
-                    <>
-                      <span>Send Message to Rutuja</span>
-                      <Send className="w-3.5 h-3.5" />
-                    </>
-                  )}
-                </button>
-              </form>
-            )}
+                  What would you like to discuss?
+                </label>
+
+                <select
+                  id="contact-topic"
+                  name="topic"
+                  value={formData.topic}
+                  onChange={(event) =>
+                    setFormData({
+                      ...formData,
+                      topic: event.target.value,
+                    })
+                  }
+                  className="w-full rounded-xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/10"
+                >
+                  <option value="Frontend Web Developer Opportunity">
+                    Frontend Web Developer Opportunity
+                  </option>
+                  <option value="ReactJS Developer Opportunity">
+                    ReactJS Developer Opportunity
+                  </option>
+                  <option value="Website Development Project">
+                    Website Development Project
+                  </option>
+                  <option value="Professional Networking">
+                    Professional Networking
+                  </option>
+                  <option value="Other Inquiry">
+                    Other Inquiry
+                  </option>
+                </select>
+              </div>
+
+              <div>
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <label
+                    htmlFor="contact-message"
+                    className="text-xs font-medium text-slate-300"
+                  >
+                    Your Message <span className="text-cyan-400">*</span>
+                  </label>
+
+                  <span className="text-[10px] tabular-nums text-slate-600">
+                    {formData.message.length}/5000
+                  </span>
+                </div>
+
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  required
+                  rows={5}
+                  maxLength={5000}
+                  value={formData.message}
+                  onChange={(event) =>
+                    setFormData({
+                      ...formData,
+                      message: event.target.value,
+                    })
+                  }
+                  placeholder="Tell me about the role, project, or opportunity..."
+                  className="w-full resize-y rounded-xl border border-slate-800 bg-slate-950/70 px-4 py-3 text-sm leading-6 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-400/10"
+                />
+              </div>
+
+              {errorMessage && (
+                <div
+                  role="alert"
+                  className="rounded-xl border border-rose-400/20 bg-rose-400/[0.06] p-3.5 text-sm leading-6 text-rose-300"
+                >
+                  {errorMessage}
+                </div>
+              )}
+
+              {emailNotice && (
+                <div
+                  role="status"
+                  className="rounded-xl border border-cyan-400/20 bg-cyan-400/[0.06] p-3.5 text-sm leading-6 text-cyan-200"
+                >
+                  {emailNotice}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="group flex w-full items-center justify-center gap-2.5 rounded-xl bg-cyan-400 px-5 py-3.5 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/10 transition hover:-translate-y-0.5 hover:bg-cyan-300 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+              >
+                Open Email App to Send
+                <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+
+              <p className="text-center text-xs leading-5 text-slate-500">
+                Your message is prepared in your email application. You must
+                send it there to complete delivery.
+              </p>
+            </form>
           </div>
-
         </div>
-
       </div>
     </section>
   );

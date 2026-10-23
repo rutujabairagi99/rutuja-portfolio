@@ -3,7 +3,7 @@ export const initialProfileData = {
   wordmark: "Rutuja Bairagi",
   role: "Frontend Web Developer",
   experienceYears: "Frontend Intern & React Developer",
-  headline: "Building responsive, component-driven web applications with ReactJS & Tailwind CSS.",
+  headline: " I’m a Web Developer passionate about building modern, responsive, and user-friendly websites.",
   tagline: "Specialized in creating 15+ reusable React components, integrating 20+ REST API endpoints with Axios, and optimizing cross-device performance.",
   bio: "Frontend Web Developer with proven hands-on experience building dynamic e-commerce modules and location-based web applications. Skilled in ReactJS, Tailwind CSS, JavaScript (ES6+), Axios REST API integration, and responsive web architecture.",
   secondaryBio: "Passionate about writing clean code, collaborating with cross-functional design and backend teams, and delivering fast, accessible user experiences.",
