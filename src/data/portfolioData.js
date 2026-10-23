@@ -1,6 +1,6 @@
 export const initialProfileData = {
   name: "Rutuja Bairagi",
-  wordmark: "Rutuja.dev",
+  wordmark: "Rutuja Bairagi",
   role: "Frontend Web Developer",
   experienceYears: "Frontend Intern & React Developer",
   headline: "Building responsive, component-driven web applications with ReactJS & Tailwind CSS.",
